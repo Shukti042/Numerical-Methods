@@ -1,0 +1,24 @@
+function s=eqnLag(x,y)
+s="";
+sz=size(x);
+n=sz(2);
+i=1;
+while(i<=n)
+    j=1;
+    p=1;
+    while(j<=n)
+        if(j==i)
+            j=j+1;
+            continue;
+        end
+        s=s+"((x-"+x(j)+")/("+x(i)+"-"+x(j)+")).";
+        j=j+1;
+    end
+    s=s+y(i);
+    i=i+1;
+    if(i<=n)
+        s=s+"+";
+    end
+end
+s=s+"=0";
+end

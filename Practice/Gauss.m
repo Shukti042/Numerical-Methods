@@ -1,0 +1,59 @@
+function out = Gauss( a,b )
+validity=1;
+sz=size(a);
+i=1;
+while(i<=sz(1))
+    j=i+1;
+    while(j<=sz(1))
+        if(abs(a(i,i))<abs(a(j,i)))
+            t=a(j,:);
+            a(j,:)=a(i,:);
+            a(i,:)=t;
+            t2=b(i);
+            b(i)=b(j);
+            b(j)=t2;
+            a
+            b
+        end
+        j=j+1;
+    end
+    j=i+1;
+    while(j<=sz(1))
+        t3=a(j,i);
+        a(j,:)=a(j,:)-((a(i,:)/a(i,i))*a(j,i));
+        b(j)=b(j)-((b(i)/a(i,i))*t3);
+        j=j+1;
+    end
+    a
+    b
+    i=i+1;
+end
+out=zeros(1,sz(1));
+n=sz(1);
+if(a(n,n)==0)
+    validity=0;
+    display('invalid input');
+end
+if(validity==1)
+out(n)=b(n)/a(n,n);
+end
+i=n-1;
+while(i>=1&validity==1)
+    sum=0;
+    j=i+1;
+    while(j<=n)
+        sum=sum+(a(i,j)*out(j));
+        j=j+1;
+    end
+    if(a(i,i)==0)
+        validity=0;
+        out=0;
+       break;
+    end
+    if(validity==1)
+    out(i)=(b(i)-sum)/a(i,i);
+    end
+    i=i-1;
+end
+end
+

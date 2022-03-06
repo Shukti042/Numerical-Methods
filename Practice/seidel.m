@@ -1,0 +1,82 @@
+function out = seidel(a,b,err,mi)
+sz=size(a);
+validity=1;
+c=0;
+i=1;
+out2=GaussJordan(a,b);
+
+while(i<=sz(1))
+    j=1;
+    while(j<=sz(1))
+        if(a(i,i)<a(i,j))
+            t=a(:,j);
+            a(:,j)=a(:,i);
+            a(:,i)=t;
+        end
+        j=j+1;
+    end
+    i=i+1;
+end
+i=1;
+while(i<=sz(1))
+    j=1;
+    sum=0;
+    while(j<=sz(1))
+        sum=sum+a(i,j);
+        j=j+1;
+    end
+    sum=sum-a(i,i);
+    if(sum>a(i,i))
+        validity=0;
+        display('Cant solve');
+        break;
+    end
+    if(sum<a(i,i))
+        c=c+1;
+    end
+    i=i+1;
+end
+if(c==0)
+     validity=0;
+     display('Cant solve');
+end
+i=1;
+out=ones(1,sz(1));
+errors=ones(1,sz(1));
+ea=err+1;
+while(i<=mi&validity==1&ea>err)
+    old=out;
+    j=1;
+    t=out';
+    while(j<=sz(1))
+        out(j)=(b(j)-(a(j,:)*t)+a(j,j)*out(j))/a(j,j);
+        if(out(j)~=0)
+        errors(j)=abs((out(j) - old(j))/out(j)) * 100;
+        old=out;
+        t=out';
+        j=j+1;
+    end
+    ea=max(errors);
+    p=max(errors);
+    if(i==1)
+        y=p;
+        x=i;
+    end
+    if(i~=1)
+        y=[y,p];
+        x=[x,i];
+    end
+    i=i+1;
+end
+out
+plot(x,y);
+k=1;
+x2=ones(1,sz(1));
+y2=ones(1,sz(1));
+while(k<=sz(1))
+    x2(i)=k;
+    y2(i)=((out2(k)-out(k))/out2(k))*100;
+    k=k+1;
+end
+plot(x2,y2);
+end

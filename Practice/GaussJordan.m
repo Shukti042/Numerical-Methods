@@ -1,0 +1,44 @@
+function out = GaussJordan( a,b )
+validity=1;
+sz=size(a);
+a(:,sz(1)+1)=b.';
+i=1;
+while(i<=sz(1))
+    j=i+1;
+    while(j<=sz(1))
+        if(abs(a(i,i))<abs(a(j,i)))
+            t=a(j,:);
+            a(j,:)=a(i,:);
+            a(i,:)=t;
+            a
+        end
+        j=j+1;
+    end
+    j=i+1;
+    while(j<=sz(1))
+        a(j,:)=a(j,:)-((a(i,:)/a(i,i))*a(j,i));
+        j=j+1;
+    end
+    a
+    i=i+1;
+end
+i=sz(1);
+while(i>=1&validity==1)
+    if(a(i,i)==0)
+        display('invlid input');
+        validity=0;
+        break;
+    end
+    a(i,:)=a(i,:)/a(i,i);
+    j=i-1;
+    while(j>=1&validity==1)
+    a(j,:)=a(j,:)-((a(i,:)/a(i,i))*a(j,i));
+        j=j-1;
+    end
+    a
+    i=i-1;
+end
+if(validity==1)
+out=a(:,sz(1)+1)
+end
+end

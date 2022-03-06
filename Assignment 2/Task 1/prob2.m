@@ -1,0 +1,41 @@
+TrainFileName = 'train.csv';
+TrainData = csvread(TrainFileName,1,0);
+x1=transpose(TrainData(:,1));
+x2=transpose(TrainData(:,2));
+x3=transpose(TrainData(:,3));
+x4=transpose(TrainData(:,4));
+x5=transpose(TrainData(:,5));
+x6=transpose(TrainData(:,6));
+y=transpose(TrainData(:,7));
+sz=size(x1);
+n=sz(2);
+s=[1 sum(x1) sum(x2) sum(x3) sum(x4) sum(x5) sum(x6)];
+mat=s;
+b=sum(y);
+mat(1,1)=n;
+mat(2,:)=[sum(x1) sum(x1.*x1) sum(x2.*x1) sum(x3.*x1) sum(x4.*x1) sum(x5.*x1) sum(x6.*x1)];
+b=[b,sum(x1.*y)];
+mat(3,:)=[sum(x2) sum(x1.*x2) sum(x2.*x2) sum(x3.*x2) sum(x4.*x2) sum(x5.*x2) sum(x6.*x2)];
+b=[b,sum(x2.*y)];
+mat(4,:)=[sum(x3) sum(x1.*x3) sum(x2.*x3) sum(x3.*x3) sum(x4.*x3) sum(x5.*x3) sum(x6.*x3)];
+b=[b,sum(x3.*y)];
+mat(5,:)=[sum(x4) sum(x1.*x4) sum(x2.*x4) sum(x3.*x4) sum(x4.*x4) sum(x5.*x4) sum(x6.*x4)];
+b=[b,sum(x4.*y)];
+mat(6,:)=[sum(x5) sum(x1.*x5) sum(x2.*x5) sum(x3.*x5) sum(x4.*x5) sum(x5.*x5) sum(x6.*x5)];
+b=[b,sum(x5.*y)];
+mat(7,:)=[sum(x6) sum(x1.*x6) sum(x2.*x6) sum(x3.*x6) sum(x4.*x6) sum(x5.*x6) sum(x6.*x6)];
+b=[b,sum(x6.*y)];
+b=transpose(b);
+out1=(inv(mat))*b;
+out=transpose(out1);
+err=erro(TrainData(1,:));
+i=2;
+while(i<=800)
+    err=err+erro(TrainData(i,:));
+    i=i+1;
+end
+err=err/800;
+err=sqrt(err);
+fprintf('y=(%f) + (%f) x1 + (%f) x2 + (%f) x3 + (%f) x4 + (%f) x5 + (%f) x6\n',out(1),out(2),out(3),out(4),out(5),out(6),out(7));
+fprintf('The Root mean squared error in train.csv is %f\n',err);
+

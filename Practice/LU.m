@@ -1,0 +1,80 @@
+function output = LU(a,b)
+validity=1;
+sz=size(a);
+i=1;
+ident=eye(sz(1));
+while(i<=sz(1))
+    j=i+1;
+    while(j<=sz(1))
+        if(abs(a(i,i))<abs(a(j,i)))
+            t=a(j,:);
+            a(j,:)=a(i,:);
+            a(i,:)=t;
+            t2=b(i);
+            b(i)=b(j);
+            b(j)=t2;
+            a
+            b
+        end
+        j=j+1;
+    end
+    j=i+1;
+    while(j<=sz(1))
+        t3=a(j,i);
+        l=a(j,i)/a(i,i);
+        a(j,:)=a(j,:)-((a(i,:)/a(i,i))*a(j,i));
+        ident(j,i)=l;
+        j=j+1;
+    end
+    a
+    ident
+    i=i+1;
+end
+out=zeros(1,sz(1));
+o=zeros(1,sz(1));
+n=sz(1);
+if(a(n,n)==0)
+    validity=0;
+    display('invalid input');
+end
+if(validity==1)
+o(1)=b(1);
+end
+i=2;
+while(i<=n&validity==1)
+    sum=0;
+    j=1;
+    while(j<i)
+        sum=sum+(ident(i,j)*o(j));
+        j=j+1;
+    end
+    if(validity==1)
+    o(i)=(b(i)-sum);
+    end
+    i=i+1;
+end
+o
+if(validity==1)
+out(n)=o(n)/a(n,n);
+end
+i=n-1;
+while(i>=1&validity==1)
+    sum=0;
+    j=i+1;
+    while(j<=n)
+        sum=sum+(a(i,j)*out(j));
+        j=j+1;
+    end
+    if(a(i,i)==0)
+        validity=0;
+        out=0;
+       break;
+    end
+    if(validity==1)
+    out(i)=(o(i)-sum)/a(i,i);
+    end
+    i=i-1;
+end
+out
+end
+

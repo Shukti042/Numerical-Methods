@@ -1,0 +1,20 @@
+function y1=funcLag(x,y,x1)
+y1=0;
+sz=size(x);
+n=sz(2);
+i=1;
+while(i<=n)
+    j=1;
+    p=1;
+    while(j<=n)
+        if(j==i)
+            j=j+1;
+            continue;
+        end
+        p=p*(((x1-x(j)))/(x(i)-x(j)));
+        j=j+1;
+    end
+    y1=y1+(p*y(i));
+    i=i+1;
+end
+end

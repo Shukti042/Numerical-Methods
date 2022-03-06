@@ -1,0 +1,31 @@
+function s=Newton(x,fx)
+sz=size(x);
+n=sz(2);
+mat=transpose(fx);
+i=2;
+while(i<=n)
+    j=i;
+    while(j<=n)
+        mat(j,i)=(mat(j,i-1)-mat(j-1,i-1))/((x(j)-x(j-i+1)));
+        j=j+1;
+    end
+    i=i+1;
+end
+b=mat(1,1);
+i=2;
+while(i<=n)
+    b=[b,mat(i,i)];
+    i=i+1;
+end
+xt=[-3:0.001:3];
+yt=func(b,xt(1),x);
+i=2;
+sz=size(xt);
+n=sz(2);
+while(i<=n)
+    yt=[yt,func(b,xt(i),x)];
+    i=i+1;
+end
+plot(xt,yt);
+s=eqns(b,x);
+end
